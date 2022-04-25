@@ -14,11 +14,16 @@
 
     function draw(data) {
 			svg.selectAll("rect").data(data).enter().append("rect")
-            .attr("x", padding)
+            .attr("x", padding+50)
 	        .attr("y", function(d,i){ return padding + i * ( height + padding ); })
 			.attr("width", function (d) { return d.width; })
-            .attr("height", function (d) { return d.height; })
+            .attr("height", height)
 			.style("fill", function (d) { return d.color; })
+
+            svg.selectAll("text").data(data).enter().append("text")
+            .attr("x", padding)
+	        .attr("y", function(d,i){ return padding + (i+1/2) * ( height + padding ); })
+            .text(function (d) { return d.label; })
 	};
 	</script>
     </body>
