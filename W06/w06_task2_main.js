@@ -84,9 +84,9 @@ class ScatterPlot {
             .append("circle")
             .attr("cx", d => self.xscale( d.x ) )
             .attr("cy", d => self.yscale( d.y ) )
-            .attr("r", d => d.r );
-            .text();
-            .attr(‘text-anchor’, “middle”);
+            .attr("r", d => d.r )
+            .text("右ラベル")
+            .attr("text-anchor", "middle");
 
 
         self.xaxis_group
