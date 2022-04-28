@@ -6,7 +6,10 @@ d3.csv("https://vizlab-kobe-lecture.github.io/InfoVis2021/W04/data.csv")
             parent: '#drawing_region',
             width: 256,
             height: 256,
-            margin: {top:10, right:10, bottom:30, left:30}
+            margin: {top:10, right:30, bottom:30, left:30},
+            title: "title",
+            xlabel: "x",
+            ylabel: "y",
         };
 
         const scatter_plot = new ScatterPlot( config, data );
@@ -23,7 +26,10 @@ class ScatterPlot {
             parent: config.parent,
             width: config.width || 256,
             height: config.height || 256,
-            margin: config.margin || {top:10, right:10, bottom:10, left:10}
+            margin: config.margin || {top:10, right:10, bottom:10, left:10},
+            title: config.title || "",
+            xlabel: config.xlabel || "",
+            ylabel: config.ylabel || "",
         }
         this.data = data;
         this.init();
@@ -46,7 +52,7 @@ class ScatterPlot {
             .range( [0, self.inner_width] );
 
         self.yscale = d3.scaleLinear()
-            .range( [0, self.inner_height] );
+            .range( [self.inner_height , 0] );
 
         self.xaxis = d3.axisBottom( self.xscale )
             .ticks(6);
@@ -59,6 +65,13 @@ class ScatterPlot {
         
         self.yaxis_group = self.chart.append('g')
             .attr('transform', `translate(0, 0)`);
+
+        self.title = self.text.append("text")
+            .attr("x", (self.config.width / 2))             
+            .attr("y", 0)
+            .attr("text-anchor", "middle")  
+            .text("ylabel");
+        
     }
 
     update() {
@@ -66,11 +79,11 @@ class ScatterPlot {
 
         const xmin = d3.min( self.data, d => d.x );
         const xmax = d3.max( self.data, d => d.x );
-        self.xscale.domain( [xmin, xmax] );
+        self.xscale.domain( [0, xmax] );
 
         const ymin = d3.min( self.data, d => d.y );
         const ymax = d3.max( self.data, d => d.y );
-        self.yscale.domain( [ymin, ymax] );
+        self.yscale.domain( [0, ymax] );
 
         self.render();
     }
@@ -84,14 +97,32 @@ class ScatterPlot {
             .append("circle")
             .attr("cx", d => self.xscale( d.x ) )
             .attr("cy", d => self.yscale( d.y ) )
-            .attr("r", d => d.r )
-            .text("右ラベル")
-            .attr("text-anchor", "middle");
-
+            .attr("r", d => d.r );
 
         self.xaxis_group
             .call( self.xaxis );
         self.yaxis_group
             .call( self.yaxis );
+        
+         self.title.append("text")   
+            .attr("x", 0 )
+            .attr("y", 0 )
+            .style("text-anchor", "middle")
+            .text(self.config.title);
+        
+
+        self.xlabel.append("text")   
+            .attr("x", 0 )
+            .attr("y", 0 )
+            .style("text-anchor", "middle")
+            .text(self.config.xlabel);
+        
+        self.ylabel.append("text")  
+            .attr("transform", "rotate(-90)") 
+            .attr("x", 0 )
+            .attr("y", 0 )
+            .style("text-anchor", "middle")
+            .text(self.config.ylabel);
+        
     }
 }
