@@ -6,10 +6,10 @@ d3.csv("https://vizlab-kobe-lecture.github.io/InfoVis2021/W04/data.csv")
             parent: '#drawing_region',
             width: 256,
             height: 256,
-            margin: {top:10, right:0, bottom:30, left:30},
-            title: "title",
-            xlabel: "xlabel",
-            ylabel: "ylabel",
+            margin: {top:40, right:30, bottom:30, left:30},
+            title: "Title",
+            xlabel: "X",
+            ylabel: "Y",
         };
 
         const scatter_plot = new ScatterPlot( config, data );
@@ -49,7 +49,7 @@ class ScatterPlot {
         self.inner_height = self.config.height - self.config.margin.top - self.config.margin.bottom;
 
         self.xscale = d3.scaleLinear()
-            .range( [30, self.inner_width] );
+            .range( [0, self.inner_width] );
 
         self.yscale = d3.scaleLinear()
             .range( [self.inner_height , 0] );
@@ -58,13 +58,13 @@ class ScatterPlot {
             .ticks(6);
 
         self.xaxis_group = self.chart.append('g')
-            .attr('transform', `translate(0, ${self.inner_height})`);
+            .attr('transform', `translate(10, ${self.inner_height})`);
         
         self.yaxis = d3.axisLeft(self.yscale)
             .ticks(6);
         
         self.yaxis_group = self.chart.append('g')
-            .attr('transform', `translate(0, 0)`);
+            .attr('transform', `translate(10, 0)`);
 
         self.labels = self.svg.append('g')
             .attr('transform', `translate(self.margin.left, self.margin.top)`);
@@ -103,8 +103,9 @@ class ScatterPlot {
         
          self.labels.append("text")   
             .attr("x", self.inner_width/2 + self.config.margin.left)
-            .attr("y", self.config.margin.top)
-            .style("text-anchor", "middle")
+            .attr("y", self.config.margin.top/2)
+            .attr("font-size", "16pt")
+            .attr("font-weight", "bold")
             .text(self.config.title);
         
 
@@ -112,13 +113,15 @@ class ScatterPlot {
             .attr("x", self.inner_width/2 + self.config.margin.left)
             .attr("y", self.inner_height + self.config.margin.top + self.config.margin.bottom)
             .style("text-anchor", "middle")
+            .attr("font-weight", "bold")
             .text(self.config.xlabel);
         
         self.labels.append("text")  
             .attr("transform", "rotate(-90)") 
-            .attr("x", - self.inner_width/2 - self.config.margin.top)
-            .attr("y", self.config.margin.left)
+            .attr("x", -self.inner_height/2 - self.config.margin.top)
+            .attr("y", self.config.margin.left/2)
             .style("text-anchor", "middle")
+            .attr("font-weight", "bold")
             .text(self.config.ylabel);
         
     }
