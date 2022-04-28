@@ -58,7 +58,7 @@ class ScatterPlot {
             .ticks(6);
 
         self.xaxis_group = self.chart.append('g')
-            .attr('transform', `translate(10, ${self.inner_height})`);
+            .attr('transform', `translate(0, ${self.inner_height})`);
         
         self.yaxis = d3.axisLeft(self.yscale)
             .ticks(6);
@@ -104,6 +104,7 @@ class ScatterPlot {
          self.labels.append("text")   
             .attr("x", self.inner_width/2 + self.config.margin.left)
             .attr("y", self.config.margin.top/2)
+            .style("text-anchor", "middle")
             .attr("font-size", "16pt")
             .attr("font-weight", "bold")
             .text(self.config.title);
