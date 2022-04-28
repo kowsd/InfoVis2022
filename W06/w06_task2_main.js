@@ -6,10 +6,10 @@ d3.csv("https://vizlab-kobe-lecture.github.io/InfoVis2021/W04/data.csv")
             parent: '#drawing_region',
             width: 256,
             height: 256,
-            margin: {top:10, right:30, bottom:30, left:30},
+            margin: {top:10, right:0, bottom:30, left:30},
             title: "title",
-            xlabel: "x",
-            ylabel: "y",
+            xlabel: "xlabel",
+            ylabel: "ylabel",
         };
 
         const scatter_plot = new ScatterPlot( config, data );
@@ -49,7 +49,7 @@ class ScatterPlot {
         self.inner_height = self.config.height - self.config.margin.top - self.config.margin.bottom;
 
         self.xscale = d3.scaleLinear()
-            .range( [0, self.inner_width] );
+            .range( [30, self.inner_width] );
 
         self.yscale = d3.scaleLinear()
             .range( [self.inner_height , 0] );
@@ -66,11 +66,8 @@ class ScatterPlot {
         self.yaxis_group = self.chart.append('g')
             .attr('transform', `translate(0, 0)`);
 
-        self.title = self.text.append("text")
-            .attr("x", (self.config.width / 2))             
-            .attr("y", 0)
-            .attr("text-anchor", "middle")  
-            .text("ylabel");
+        self.labels = self.svg.append('g')
+            .attr('transform', `translate(self.margin.left, self.margin.top)`);
         
     }
 
@@ -104,23 +101,23 @@ class ScatterPlot {
         self.yaxis_group
             .call( self.yaxis );
         
-         self.title.append("text")   
-            .attr("x", 0 )
-            .attr("y", 0 )
+         self.labels.append("text")   
+            .attr("x", self.inner_width/2 + self.config.margin.left)
+            .attr("y", self.config.margin.top)
             .style("text-anchor", "middle")
             .text(self.config.title);
         
 
-        self.xlabel.append("text")   
-            .attr("x", 0 )
-            .attr("y", 0 )
+        self.labels.append("text")   
+            .attr("x", self.inner_width/2 + self.config.margin.left)
+            .attr("y", self.inner_height + self.config.margin.top + self.config.margin.bottom)
             .style("text-anchor", "middle")
             .text(self.config.xlabel);
         
-        self.ylabel.append("text")  
+        self.labels.append("text")  
             .attr("transform", "rotate(-90)") 
-            .attr("x", 0 )
-            .attr("y", 0 )
+            .attr("x", - self.inner_width/2 - self.config.margin.top)
+            .attr("y", self.config.margin.left)
             .style("text-anchor", "middle")
             .text(self.config.ylabel);
         
