@@ -58,7 +58,7 @@ class ScatterPlot {
             .ticks(6);
 
         self.xaxis_group = self.chart.append('g')
-            .attr('transform', `translate(0, ${self.inner_height})`);
+            .attr('transform', `translate(10, ${self.inner_height})`);
         
         self.yaxis = d3.axisLeft(self.yscale)
             .ticks(6);
@@ -92,7 +92,7 @@ class ScatterPlot {
             .data(self.data)
             .enter()
             .append("circle")
-            .attr("cx", d => self.xscale( d.x ) )
+            .attr("cx", d => self.xscale( d.x +10 ) )
             .attr("cy", d => self.yscale( d.y ) )
             .attr("r", d => d.r );
 
