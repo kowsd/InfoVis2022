@@ -104,6 +104,7 @@ class ScatterPlot {
          self.labels.append("text")   
             .attr("x", self.inner_width/2 + self.config.margin.left)
             .attr("y", self.config.margin.top/2)
+            .style("text-anchor", "middle")
             .attr("font-size", "16pt")
             .attr("font-weight", "bold")
             .text(self.config.title);
