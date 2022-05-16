@@ -1,36 +1,33 @@
 d3.csv("https://kowsd.github.io/InfoVis2022/W08/task2.csv")
     .then( data => {
-        data.forEach( d => { d.value = +d.value;});
+        data.forEach( d => { d.x = +d.x; d.y = +d.y; });
 
         var config = {
             parent: '#drawing_region',
             width: 256,
             height: 256,
-            margin: {top:50, right:10, bottom:40, left:60},
-            title: "Food Price",
-            xlabel: "Price",
+            margin: {top:40, right:30, bottom:30, left:30}
         };
 
-        const bar_chart = new BarChart( config, data );
-        bar_chart.update();
+        const line_chart = new LineChart( config, data );
+        line_chart.update();
     })
     .catch( error => {
         console.log( error );
     });
 
-    class BarChart{
-          constructor(config,data){
+    class LineChart {
+
+        constructor( config, data ) {
             this.config = {
-                  parent: config.parent,
-                  width: config.width || 256,
-                  height: config.height || 256,
-                  margin: config.margin || {top:10, right:10, bottom:10, left:10},
-                  title: config.title || "",
-                  xlabel: config.xlabel || "",
-              }
-              this.data = data;
-              this.init();
-          }
+                parent: config.parent,
+                width: config.width || 256,
+                height: config.height || 256,
+                margin: config.margin || {top:10, right:10, bottom:10, left:10}
+            }
+            this.data = data;
+            this.init();
+        }
           init(){
             let self = this;
 
@@ -45,13 +42,12 @@ d3.csv("https://kowsd.github.io/InfoVis2022/W08/task2.csv")
             self.inner_height = self.config.height - self.config.margin.top - self.config.margin.bottom;
     
             self.xscale = d3.scaleLinear()
-                .domain([0, d3.max(self.data, d => d.value)])
+                .domain([0, d3.max(self.data, d => d.x)])
                 .range( [0, self.inner_width] );
     
-            self.yscale = d3.scaleBand()
-                .domain(self.data.map(d => d.label))
-                .range([0, self.inner_height])
-                .paddingInner(0.1);
+            self.yscale = d3.scaleLinear()
+                .domain([0, d3.max(self.data, d => d.y)])
+                .range([self.inner_height, 0]);
     
             self.xaxis = d3.axisBottom( self.xscale )
                 .ticks(5)
@@ -64,46 +60,38 @@ d3.csv("https://kowsd.github.io/InfoVis2022/W08/task2.csv")
                 .attr('transform', `translate(0, ${self.inner_height})`);
             
             self.yaxis_group = self.chart.append('g');
-    
-            self.labels = self.svg.append('g')
-                .attr('transform', `translate(self.margin.left, self.margin.top)`);
+
+            self.area = d3.area()
+                .x( d => self.xscale(d.x) )
+                .y1( d => self.yscale(d.y) )
+                .y0( d => self.yscale(0) );
+ 
           }
           update(){
             let self = this;
-
-            const xmax = d3.max( self.data, d => d.value );
-            self.xscale.domain( [0, xmax] );
     
             self.render();
           }
           render(){
             let self = this;
 
-            self.chart.selectAll("rect").data(self.data).enter()
-            .append("rect")
-            .attr("x", 0)
-            .attr("y", d => self.yscale(d.label))
-            .attr("width", d => self.xscale(d.value))
-            .attr("height", self.yscale.bandwidth());
+            self.chart.append('path')
+            .attr('d', self.area(self.data))
+            .attr('stroke', 'black')
+            .attr('fill', 'red');
+
+            self.chart.selectAll("circle")
+            .data(self.data)
+            .enter()
+            .append("circle")
+            .attr("cx", d => self.xscale( d.x ) )
+            .attr("cy", d => self.yscale( d.y ) )
+            .attr("r", 4 );
       
             self.xaxis_group
                 .call( self.xaxis );
             self.yaxis_group
                 .call( self.yaxis );
             
-            self.labels.append("text")   
-                .attr("x", self.inner_width/2 + self.config.margin.left)
-                .attr("y", self.config.margin.top/2)
-                .style("text-anchor", "middle")
-                .attr("font-size", "16pt")
-                .attr("font-weight", "bold")
-                .text(self.config.title);
-            
-      
-            self.labels.append("text")   
-                .attr("x", self.inner_width/2 + self.config.margin.left)
-                .attr("y", self.inner_height + self.config.margin.top + self.config.margin.bottom)
-                .style("text-anchor", "middle")
-                .text(self.config.xlabel);
             }
     }
