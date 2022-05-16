@@ -44,7 +44,7 @@ d3.csv("https://kowsd.github.io/InfoVis2022/W08/task1.csv")
                 .value( d => d.value );
             
             self.arc = d3.arc()
-                .innerRadius(0)
+                .innerRadius(self.config.radius/3)
                 .outerRadius(self.config.radius);
 
             self.piechart = self.chart.selectAll('pie')
