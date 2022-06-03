@@ -1,17 +1,22 @@
+let BarChart
+let ScatterPlot
+
 d3.csv("https://kowsd.github.io/InfoVis2022/final/data.csv")
     .then( data => {
-        data.forEach( d => { d.value = +d.value;});
+        data.forEach( d => { 
+            d.value = +d.value;
+            d.x = +d.x;
+            d.y = +d.y;
+        });
 
-        var config = {
+        bar_chart = new  BarChart({
             parent: '#drawing_region_barchart',
             width: 256,
             height: 256,
             margin: {top:50, right:10, bottom:40, left:60},
             title: "Food Price",
             xlabel: "Price",
-        };
-
-        const bar_chart = new BarChart(config,data);
+        }, data);
         bar_chart.update();
     
         d3.select('#reverse')
@@ -32,9 +37,15 @@ d3.csv("https://kowsd.github.io/InfoVis2022/final/data.csv")
             bar_chart.update();
         });
 
-        const scatter_plot = new ScatterPlot( config, data );
+        scatter_plot = new  ScatterPlot({
+            parent: '#drawing_region_scatterplot',
+            width: 256,
+            height: 256,
+            margin: {top:50, right:10, bottom:40, left:60},
+            title: "Food Price",
+            xlabel: "Price",
+        }, data);
         scatter_plot.update();
-
 
     })
     .catch( error => {
