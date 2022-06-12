@@ -27,13 +27,6 @@ d3.csv("https://kowsd.github.io/InfoVis2022/final/data.csv")
         }, data);
         scatter_plot.update();
 
-        d3.select('#1')
-        .on('click', d => {
-            const bar_chart = new BarChart(config,data);
-            data.reverse();
-            bar_chart.update();
-        });
-
     })
     .catch( error => {
         console.log( error );
