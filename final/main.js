@@ -21,12 +21,14 @@ d3.csv("https://kowsd.github.io/InfoVis2022/final/data.csv")
         }, data);
         bar_chart.update();
 
-        var choise = document.getElementById('choise');
-        choise.onchance = function(){
-            data = data.filter.includes(this.value);
-            console.log( 'a' );
+
+        d3.select('#renew')
+        .on('click', d => {
+            let id = document.getElementById('choise');
+            console.log( id.value );
+            data = data.filter.includes(id.value);
             bar_chart.update();
-        }
+        });
 
     
         scatter_plot = new  ScatterPlot({
