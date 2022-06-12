@@ -1,12 +1,10 @@
 d3.csv("https://kowsd.github.io/InfoVis2022/final/data.csv")
     .then( data => {
         data.forEach( d => { 
-            d.value = +d.value;
-            d.x = +d.x;
-            d.y = +d.y;
-            d.first = +d.first;
-            d.second = +d.second;
-            d.third = +d.third;
+            d.name = +d.name;
+            d.team = +d.team;
+            d.save = +d.save;
+            d.win = +d.win;
         });
 
         bar_chart = new  BarChart({
