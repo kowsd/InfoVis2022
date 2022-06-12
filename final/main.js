@@ -5,14 +5,13 @@ d3.csv("https://kowsd.github.io/InfoVis2022/final/data.csv")
             d.Team = +d.Team;
             d.Save = +d.Save;
             d.Win = +d.Win;
-            console.log( self.data );
         });
 
         bar_chart = new  BarChart({
             parent: '#drawing_region_barchart',
             width: 512,
             height: 512,
-            margin: {top:50, right:10, bottom:40, left:60},
+            margin: {top:50, right:10, bottom:40, left:100},
             title: "Graph1",
         }, data);
         bar_chart.update();
