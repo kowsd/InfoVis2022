@@ -1,10 +1,10 @@
 d3.csv("https://kowsd.github.io/InfoVis2022/final/data.csv")
     .then( data => {
         data.forEach( d => { 
-            d.name = +d.Name;
-            d.team = +d.team;
-            d.save = +d.save;
-            d.win = +d.win;
+            d.Name = +d.Name;
+            d.Team = +d.Team;
+            d.Save = +d.Save;
+            d.Win = +d.Win;
             console.log( self.data );
         });
 
