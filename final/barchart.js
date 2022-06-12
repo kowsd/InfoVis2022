@@ -7,6 +7,7 @@ class BarChart{
             margin: config.margin || {top:10, right:10, bottom:10, left:10},
             title: config.title || "",
             xlabel: config.xlabel || "",
+            color: config.color,
         }
         this.data = data;
         this.init();
@@ -88,7 +89,7 @@ class BarChart{
       .attr("y", d => self.yscale(d.name))
       .attr("width", d => self.xscale(d.save))
       .attr("height", self.yscale.bandwidth())
-      .attr('fill', 'blue');
+      .attr('fill', d => self.config.color(d.team));
 
       self.xaxis_group
           .call( self.xaxis );

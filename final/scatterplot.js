@@ -9,6 +9,7 @@ class ScatterPlot {
             title: config.title || "",
             xlabel: config.xlabel || "",
             ylabel: config.ylabel || "",
+            color: config.color,
         }
         this.data = data;
         this.init();
@@ -71,6 +72,7 @@ class ScatterPlot {
         
     }
 
+
     update() {
         let self = this;
 
@@ -82,12 +84,11 @@ class ScatterPlot {
         const ymax = d3.max( self.data, d => d.win );
         self.yscale.domain( [0, 1] );
 
-        console.log( self.data );
-
         self.render();
     }
 
     render() {
+        
         let self = this;
 
         self.chart.selectAll("circle")
@@ -97,12 +98,11 @@ class ScatterPlot {
             .attr("cx", d => self.xscale( d.save ) )
             .attr("cy", d => self.yscale( d.win ) )
             .attr("r", 5 )
+            .attr('fill', d => self.config.color(d.team))
             .on('mouseover', (e,d) => {
-                d3.select(e.currentTarget)
-                    .attr('fill','red');
                 d3.select('#tooltip')
                     .style('opacity', 1)
-                    .html(`<div class="tooltip-label">Position</div>(${d.save}, ${d.win})`);
+                    .html(`<div class="tooltip-label">Position</div>(${d.name}, ${d.team})`);
             })
             .on('mousemove', (e) => {
                 const padding = 10;
@@ -111,8 +111,6 @@ class ScatterPlot {
                     .style('top', (e.pageY + padding) + 'px');
             })
             .on('mouseleave', (e) => {
-                d3.select(e.currentTarget)
-                    .attr('fill','black');
                 d3.select('#tooltip')
                     .style('opacity', 0);
             });
