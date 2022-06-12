@@ -11,7 +11,6 @@ class ScatterPlot {
             ylabel: config.ylabel || "",
         }
         this.data = data;
-        console.log( self.data );
         this.init();
     }
 
@@ -75,13 +74,15 @@ class ScatterPlot {
     update() {
         let self = this;
 
-        const xmin = d3.min( self.data, d => d.Save );
-        const xmax = d3.max( self.data, d => d.Save );
+        const xmin = d3.min( self.data, d => d.save );
+        const xmax = d3.max( self.data, d => d.save );
         self.xscale.domain( [0, xmax+1] );
 
-        const ymin = d3.min( self.data, d => d.Win );
-        const ymax = d3.max( self.data, d => d.Win );
+        const ymin = d3.min( self.data, d => d.win );
+        const ymax = d3.max( self.data, d => d.win );
         self.yscale.domain( [0, 1] );
+
+        console.log( self.data );
 
         self.render();
     }
@@ -93,15 +94,15 @@ class ScatterPlot {
             .data(self.data)
             .enter()
             .append("circle")
-            .attr("cx", d => self.xscale( d.Save ) )
-            .attr("cy", d => self.yscale( d.Win ) )
+            .attr("cx", d => self.xscale( d.save ) )
+            .attr("cy", d => self.yscale( d.win ) )
             .attr("r", 5 )
             .on('mouseover', (e,d) => {
                 d3.select(e.currentTarget)
                     .attr('fill','red');
                 d3.select('#tooltip')
                     .style('opacity', 1)
-                    .html(`<div class="tooltip-label">Position</div>(${d.Save}, ${d.Win})`);
+                    .html(`<div class="tooltip-label">Position</div>(${d.save}, ${d.win})`);
             })
             .on('mousemove', (e) => {
                 const padding = 10;
