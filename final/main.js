@@ -5,6 +5,7 @@ d3.csv("https://kowsd.github.io/InfoVis2022/final/data.csv")
             d.team = +d.team;
             d.save = +d.save;
             d.win = +d.win;
+            console.log( self.data );
         });
 
         bar_chart = new  BarChart({

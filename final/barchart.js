@@ -72,7 +72,6 @@ class BarChart{
 
       self.yscale.domain(self.data.map(d => d.name));
 
-      console.log( self.data );
 
       self.render();
     }
