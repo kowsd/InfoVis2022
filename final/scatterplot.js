@@ -74,13 +74,13 @@ class ScatterPlot {
     update() {
         let self = this;
 
-        const xmin = d3.min( self.data, d => d.x );
-        const xmax = d3.max( self.data, d => d.x );
-        self.xscale.domain( [0, xmax+10] );
+        const xmin = d3.min( self.data, d => d.防御率 );
+        const xmax = d3.max( self.data, d => d.防御率 );
+        self.xscale.domain( [0, xmax+1] );
 
-        const ymin = d3.min( self.data, d => d.y );
-        const ymax = d3.max( self.data, d => d.y );
-        self.yscale.domain( [0, ymax+10] );
+        const ymin = d3.min( self.data, d => d.勝率 );
+        const ymax = d3.max( self.data, d => d.勝率 );
+        self.yscale.domain( [0, 1] );
 
         self.render();
     }
@@ -92,9 +92,9 @@ class ScatterPlot {
             .data(self.data)
             .enter()
             .append("circle")
-            .attr("cx", d => self.xscale( d.x +10 ) )
-            .attr("cy", d => self.yscale( d.y ) )
-            .attr("r", d => d.r )
+            .attr("cx", d => self.xscale( d.防御率 ) )
+            .attr("cy", d => self.yscale( d.勝率 ) )
+            .attr("r", 10 )
             .on('mouseover', (e,d) => {
                 d3.select(e.currentTarget)
                     .attr('fill','red');

@@ -25,11 +25,11 @@ class BarChart{
       self.inner_height = self.config.height - self.config.margin.top - self.config.margin.bottom;
 
       self.xscale = d3.scaleLinear()
-          .domain([0, d3.max(self.data, d => d.value)])
+          .domain([0, d3.max(self.data, d => d.防御率)])
           .range( [0, self.inner_width] );
 
       self.yscale = d3.scaleBand()
-          .domain(self.data.map(d => d.label))
+          .domain(self.data.map(d => d.Name))
           .range([0, self.inner_height])
           .paddingInner(0.1);
 
@@ -67,10 +67,10 @@ class BarChart{
     update(){
       let self = this;
 
-      const xmax = d3.max( self.data, d => d.value );
+      const xmax = d3.max( self.data, d => d.防御率 );
       self.xscale.domain( [0, xmax] );
 
-      self.yscale.domain(self.data.map(d => d.label));
+      self.yscale.domain(self.data.map(d => d.Name));
 
       self.render();
     }
@@ -84,8 +84,8 @@ class BarChart{
       .join("rect")
       .transition().duration(1000)
       .attr("x", 0)
-      .attr("y", d => self.yscale(d.label))
-      .attr("width", d => self.xscale(d.value))
+      .attr("y", d => self.yscale(d.Name))
+      .attr("width", d => self.xscale(d.防御率))
       .attr("height", self.yscale.bandwidth())
       .attr('fill', 'blue');
 

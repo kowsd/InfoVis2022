@@ -19,20 +19,33 @@
                 font-size: 11px;
                 color: #888;
             }
+            .graphs{
+                display: flex;
+            }
            </style>
     </head>
     <body>
-        <h2>Title</h2>
+        <h2>セリーグ先発投手の防御率,勝率の可視化</h2>
         <div>
-            <button type="button" id="reverse">Reverse</button>
-            <button type="button" id="ascend">Ascend</button>
-            <button type="button" id="descend">Descend</button>
+            <label for="data-select">Select the data:</label>
+
+            <select name="showdata" id="data-select">
+                <option value="">--Team--</option>
+                <option value=1">阪神</option>
+                <option value="2">広島</option>
+                <option value="3">ヤクルト</option>
+                <option value="4">巨人</option>
+                <option value="5">中日</option>
+                <option value="6">DeNA</option>
+            </select>
         </div>
-        <div><svg id="drawing_region_barchart"></svg></div>
-        <div><svg id="drawing_region_scatterplot"></svg></div>
+        <div class = graphs>
+            <div><svg id="drawing_region_barchart"></svg></div>
+            <div><svg id="drawing_region_scatterplot"></svg></div>
+        </div>
 	    <script src="https://d3js.org/d3.v6.min.js"></script>
-	    <script src="main.js"></script>
         <script src="barchart.js"></script>
         <script src="scatterplot.js"></script>
+        <script src="main.js"></script>
     </body>
 </html>
